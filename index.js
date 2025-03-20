@@ -17,7 +17,7 @@ const app = express();
 const port = 3000;
 let router = express.Router();
 
-mongoose.connect('  ', {
+mongoose.connect('mongodb+srv://whatsbixby:whatsbixby@cluster0.idp3t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
