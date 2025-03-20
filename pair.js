@@ -5,33 +5,26 @@ import fs from 'fs';
 import pino from 'pino';
 import path from 'path';
 import {
-    makeWASocket,
     useMultiFileAuthState,
     delay,
     Browsers,
     fetchLatestBaileysVersion,
     makeCacheableSignalKeyStore
 } from "@whiskeysockets/baileys";
+import { makeWASocket } from "@whiskeysockets/baileys";
 import { readFile } from "node:fs/promises";
-
 const pastebin = new PastebinAPI('r1eflgs76uuvyj-Q8aQFCVMGSiJpDXSL');
 const app = express();
 const port = 3000;
 let router = express.Router();
 
-// Serve static files
-app.use(express.static('public'));
-
-// Route for the home page
+app.use(express.static('statics'));
 app.get('/', (req, res) => {
-    if (!req.query.number) {
-        res.sendFile(path.join(process.cwd(), 'public', 'pair.html'));
-        return;
-    }
-    router(req, res);
+    if (!req.query.number) { res.sendFile(path.join(process.cwd(), 'statics', 'pair.html'));
+    return; } router(req, res);
 });
 
-app.listen(port, '0.0.0.0', () => {
+app.listen(port, '', () => {
     console.log(`Server running on port ${port}`);
 });
 
@@ -55,11 +48,9 @@ function removeFile(FilePath) {
 router.get('/', async (req, res) => {
     const id = makeid();
     let num = req.query.number;
-
-    async function getPaire() {
+    async function Wow() {
         const { state, saveCreds } = await useMultiFileAuthState('./temp/' + id);
-        try {
-            let session = makeWASocket({
+        try { let conn = makeWASocket({
                 auth: {
                     creds: state.creds,
                     keys: makeCacheableSignalKeyStore(state.keys, pino({level: "fatal"}).child({level: "fatal"})),
@@ -68,17 +59,16 @@ router.get('/', async (req, res) => {
                 logger: pino({level: "fatal"}).child({level: "fatal"}),
                 browser: Browsers.macOS("Safari"),
             });
-            if (!session.authState.creds.registered) {
+            if (!conn.authState.creds.registered) {
                 await delay(1500);
                 num = num.replace(/[^0-9]/g, '');
-                const code = await session.requestPairingCode(num);
+                const code = await conn.requestPairingCode(num);
                 if (!res.headersSent) {
                     await res.send({ code });
                 }
             }
-            session.ev.on('creds.update', saveCreds);
-
-            session.ev.on("connection.update", async (s) => {
+            conn.ev.on('creds.update', saveCreds);
+            conn.ev.on("connection.update", async (s) => {
                 const { connection, lastDisconnect } = s;
 
                 if (connection == "open") {
@@ -88,26 +78,25 @@ router.get('/', async (req, res) => {
                     let code = btoa(data);
                     const timestamp = Date.now().toString(36);
                     let c = `Aqua~${code}${timestamp}`;
-                    await session.sendMessage(session.user.id, {text:`${c}`})
-
+                    await conn.sendMessage(conn.user.id, {text:`${c}`})
                     await delay(100);
-                    await session.ws.close();
+                    await conn.ws.close();
                     return await removeFile('./temp/' + id);
                 } else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
                     await delay(10000);
-                    getPaire();
+                    WoW();
                 }
             });
         } catch (err) {
-            console.error("Error:", err);
+            console.error("err);
             await removeFile('./temp/' + id);
             if (!res.headersSent) {
-                await res.send({ error: "Failed to generate pairing code. Please try again." });
+                await res.send({ error: "Please try again" });
             }
         }
     }
 
-    return await getPaire();
+    return await WoW();
 });
 
 export default router;
