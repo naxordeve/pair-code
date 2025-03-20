@@ -12,7 +12,7 @@ import {
     makeCacheableSignalKeyStore
 } from "@whiskeysockets/baileys";
 import { readFile } from "node:fs/promises";
-const pastebin = new PastebinAPI('r1eflgs76uuvyj-Q8aQFCVMGSiJpDXSL');
+const pastebin = new PastebinAPI('ypkqXUGgzysc_yLPTBaEZ_G3G-nvjEsh');
 const app = express();
 const port = 3000;
 let router = express.Router();
