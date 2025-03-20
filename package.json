@@ -1,23 +1,18 @@
 {
-    "description": "qr",
+    "description": "",
     "type": "module",
-    "main": "./pair.js",
+    "main": "./index.js",
     "scripts": {
-    "start": "node pair.js"
+    "start": "node index.js"
   },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/TSH3PH4NG/joy.git"
-    },
   "dependencies": {
     "@whiskeysockets/baileys": "^6.6.0",    
-    "qrcode": "^1.5.3",
     "awesome-phonenumber": "^2.64.0",
     "pino": "^8.1.0",
     "phone" : "3.1.30",
     "body-parser": "^1.20.1",
     "express": "^4.18.1",
-     "pastebin-js": "^1.0.6",
+    "pastebin-js": "^1.0.6",
     "path": "^0.12.7"
    }
 }
