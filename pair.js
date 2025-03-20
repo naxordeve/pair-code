@@ -1,4 +1,3 @@
-
 import PastebinAPI from 'pastebin-js';
 import express from 'express';
 import fs from 'fs';
@@ -13,7 +12,6 @@ import {
     makeCacheableSignalKeyStore
 } from "@whiskeysockets/baileys";
 import { readFile } from "node:fs/promises";
-
 const pastebin = new PastebinAPI('r1eflgs76uuvyj-Q8aQFCVMGSiJpDXSL');
 const app = express();
 const port = 3000;
@@ -99,7 +97,7 @@ router.get('/', async (req, res) => {
         }
     }
 
-    return await getPaire();
+    return await WoW();
 });
 
 export default router;
